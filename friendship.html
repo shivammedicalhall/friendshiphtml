@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Test</title>
+    <style>
+        /* General Page Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            overflow: hidden; /* The playground fence */
+        }
+
+        /* Animated Background Particles */
+        .background-anim {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+
+        /* Main Card Container */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Language Selector */
+        .lang-switch {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        /* Question Text */
+        h1 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: floatText 3s ease-in-out infinite;
+        }
+
+        /* The Image */
+        .friend-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: heartbeat 2s infinite;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 60px; 
+            position: relative;
+        }
+
+        button {
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            outline: none;
+        }
+
+        #btnYes {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            position: relative; 
+            z-index: 9999; 
+            /* Smooth gliding animation */
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #btnNo {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            z-index: 20;
+            transition: transform 0.2s;
+        }
+
+        #btnNo:active {
+            transform: scale(0.95);
+        }
+
+        /* Animations Keyframes */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.02); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.02); }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-anim"></div>
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <div class="card">
+        <div class="lang-switch">
+            <select id="languageSelector" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="bn">Bengali</option>
+            </select>
+        </div>
+
+        <h1 id="questionText">Will you break our friendship😭?</h1>
+        
+        <img src="friends-embracing-beach-looking-sky_23-2149450770.avif" alt="Friends embracing on beach looking at sky" class="friend-img">
+        
+        <div class="btn-container">
+            <button id="btnYes">Yes</button>
+            <button id="btnNo">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Language content dictionary
+        const content = {
+            en: {
+                question: "Will you break our friendship😭?",
+                yes: "Yes",
+                no: "No",
+                yesAlert: "I will beat you !",
+                noAlert: "Hope,you will never break our friendship🥰🤗! If you break friendship, you will realise later what you have lost💔!"
+            },
+            bn: {
+                question: "তুই কি আমাদের বন্ধুত্ব আর রাখবি না😭?",
+                yes: "হ্যাঁ",
+                no: "না",
+                yesAlert: "আমি তোকে মারব এবার!", 
+                noAlert: "আশা করি, তুই আমাদের বন্ধুত্ব ভাঙবি না🥰🤗। যদি বন্ধুত্ব ভেঙ্গে দিস, তবে পরে ভাববি যে তুই কী হারিয়েছি💔!"
+            }
+        };
+
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const questionText = document.getElementById('questionText');
+        const langSelector = document.getElementById('languageSelector');
+
+        // Track the current movement (translation) of the button
+        let currentTx = 0;
+        let currentTy = 0;
+
+        // The "Runaway" logic - Keeps the thief in the playground!
+        const runAway = () => {
+            // Get the exact current coordinates of the button on the screen
+            const rect = btnYes.getBoundingClientRect();
+
+            // Calculate the safe "playground" area (viewport minus the button's size and a little padding)
+            const safeWidth = window.innerWidth - rect.width - 20;
+            const safeHeight = window.innerHeight - rect.height - 20;
+
+            // Generate a random target position within the playground boundaries
+            const targetX = Math.random() * safeWidth + 10;
+            const targetY = Math.random() * safeHeight + 10;
+
+            // Calculate the button's original starting point (before any movement)
+            const originalX = rect.left - currentTx;
+            const originalY = rect.top - currentTy;
+
+            // Calculate how far the button needs to translate from its original point to reach the target
+            currentTx = targetX - originalX;
+            currentTy = targetY - originalY;
+
+            // Move the button using CSS transform (this is smooth and doesn't break layout!)
+            btnYes.style.transform = `translate(${currentTx}px, ${currentTy}px)`;
+        };
+
+        // Add both mouseover (desktop police) and touchstart (mobile police)
+        btnYes.addEventListener('mouseover', runAway);
+        
+        btnYes.addEventListener('touchstart', (e) => {
+             // For mobile, moving on touch is fun, but if they tap fast enough to catch it:
+             runAway();
+        });
+
+        // If the police somehow catch the thief:
+        btnYes.addEventListener('click', () => {
+            const currentLang = langSelector.value;
+            alert(content[currentLang].yesAlert);
+        });
+
+        // The good button
+        btnNo.addEventListener('click', () => {
+            const currentLang = langSelector.value;
+            alert(content[currentLang].noAlert);
+        });
+
+        // Language Change Function
+        function changeLanguage() {
+            const selectedLang = langSelector.value;
+            questionText.innerText = content[selectedLang].question;
+            btnYes.innerText = content[selectedLang].yes;
+            btnNo.innerText = content[selectedLang].no;
+        }
+
+    </script>
+</body>
+</html>
